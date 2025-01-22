@@ -146,4 +146,14 @@ async def startup_event():
 
 @app.on_event("shutdown")
 async def shutdown_event():
-    scheduler.shutdown()  # Shutdown the scheduler
+    scheduler.shutdown()
+sio=socketio.AsyncServer(
+    async_mode='asgi',
+    cors_allowed_origins='*',
+async_handlers=True
+)
+pricer=socketio.ASGIApp(
+    socketio_server=sio,
+    other_asgi_app=app,
+    socketio_path='/socket.io'
+)
